@@ -1,0 +1,74 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+    role_hierarchy:
+        ROLE_CLIENT:      ROLE_USER
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username_email
+
+        admin_userbundle:
+            id: fos_user.user_provider.username_email
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+            # user_checker: user.user_checker
+
+        admin:
+            pattern:            /admin(.*)
+            context: admin
+            # user_checker: user.user_checker
+            form_login:
+                provider:   admin_userbundle
+                login_path: /admin/login
+                check_path: /admin/login_check
+                csrf_token_generator: security.csrf.token_manager
+                always_use_default_target_path: true
+                default_target_path: sonata_admin_dashboard
+            logout:
+                path:   /admin/logout
+                target: /admin/login
+            anonymous: true
+            switch_user: true
+
+        main:
+            pattern: ^/
+            context: admin
+            # user_checker: user.user_checker
+            form_login:
+                provider: fos_userbundle
+                username_parameter: _email
+                login_path: /u/login
+                check_path: /u/login_check
+                csrf_token_generator: security.csrf.token_manager
+                always_use_default_target_path: true
+                default_target_path: user_profile
+            remember_me:
+                lifetime: 5400 # in seconds
+                secret: "%secret%"
+            logout:
+                path:   /u/logout
+                target: /u/login
+            anonymous:      true
+            switch_user: true
+
+    access_control:
+        - { path: ^/u/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/u/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/u/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        # Admin Area
+        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: ROLE_SUPER_ADMIN }
+
+        #User Access
+        - { path: ^/u/profile, role: ROLE_CLIENT }

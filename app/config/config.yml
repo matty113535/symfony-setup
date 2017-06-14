@@ -1,0 +1,264 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+    - { resource: "@AppBundle/Resources/config/services.yml" }
+    - { resource: "@UserBundle/Resources/config/services.yml" }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+
+framework:
+    #esi:             ~
+    translator:      { fallbacks: ["%locale%"] }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enabled: true, enable_annotations: true }
+    #serializer:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+    fragments:       ~
+    http_method_override: true
+    assets: ~
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    form_themes:
+        - ':form:bootstrap_3_layout.html.twig'
+    globals:
+        email_address: "%email_address%"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   pdo_mysql
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        types:
+            json: Sonata\Doctrine\Types\JsonType
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+        dql:
+            datetime_functions:
+                date: DoctrineExtensions\Query\Mysql\Date
+                date_format: DoctrineExtensions\Query\Mysql\DateFormat
+                dateadd: DoctrineExtensions\Query\Mysql\DateAdd
+                datesub: DoctrineExtensions\Query\Mysql\DateSub
+                datediff: DoctrineExtensions\Query\Mysql\DateDiff
+                day: DoctrineExtensions\Query\Mysql\Day
+                dayname: DoctrineExtensions\Query\Mysql\DayName
+                dayofweek: DoctrineExtensions\Query\Mysql\DayOfWeek
+                dayofyear: DoctrineExtensions\Query\Mysql\DayOfYear
+                div: DoctrineExtensions\Query\Mysql\Div
+                from_unixtime: DoctrineExtensions\Query\Mysql\FromUnixtime
+                last_day: DoctrineExtensions\Query\Mysql\LastDay
+                minute: DoctrineExtensions\Query\Mysql\Minute
+                now: DoctrineExtensions\Query\Mysql\Now
+                month: DoctrineExtensions\Query\Mysql\Month
+                monthname: DoctrineExtensions\Query\Mysql\MonthName
+                second: DoctrineExtensions\Query\Mysql\Second
+                strtodate: DoctrineExtensions\Query\Mysql\StrToDate
+                time: DoctrineExtensions\Query\Mysql\Time
+                timediff: DoctrineExtensions\Query\Mysql\TimeDiff
+                timestampadd: DoctrineExtensions\Query\Mysql\TimestampAdd
+                timestampdiff: DoctrineExtensions\Query\Mysql\TimestampDiff
+                week: DoctrineExtensions\Query\Mysql\Week
+                weekday: DoctrineExtensions\Query\Mysql\WeekDay
+                year: DoctrineExtensions\Query\Mysql\Year
+                yearweek: DoctrineExtensions\Query\Mysql\YearWeek
+                unix_timestamp: DoctrineExtensions\Query\Mysql\UnixTimestamp
+
+            numeric_functions:
+                acos: DoctrineExtensions\Query\Mysql\Acos
+                asin: DoctrineExtensions\Query\Mysql\Asin
+                atan2: DoctrineExtensions\Query\Mysql\Atan2
+                atan: DoctrineExtensions\Query\Mysql\Atan
+                bit_count: DoctrineExtensions\Query\Mysql\BitCount
+                bit_xor: DoctrineExtensions\Query\Mysql\BitXor
+                ceil: DoctrineExtensions\Query\Mysql\Ceil
+                cos: DoctrineExtensions\Query\Mysql\Cos
+                cot: DoctrineExtensions\Query\Mysql\Cot
+                floor: DoctrineExtensions\Query\Mysql\Floor
+                hour: DoctrineExtensions\Query\Mysql\Hour
+                pi: DoctrineExtensions\Query\Mysql\Pi
+                power: DoctrineExtensions\Query\Mysql\Power
+                quarter: DoctrineExtensions\Query\Mysql\Quarter
+                rand: DoctrineExtensions\Query\Mysql\Rand
+                round: DoctrineExtensions\Query\Mysql\Round
+                stddev: DoctrineExtensions\Query\Mysql\StdDev
+                sin: DoctrineExtensions\Query\Mysql\Sin
+                std: DoctrineExtensions\Query\Mysql\Std
+                tan: DoctrineExtensions\Query\Mysql\Tan
+
+            string_functions:
+                ascii: DoctrineExtensions\Query\Mysql\Ascii
+                binary: DoctrineExtensions\Query\Mysql\Binary
+                char_length: DoctrineExtensions\Query\Mysql\CharLength
+                concat_ws: DoctrineExtensions\Query\Mysql\ConcatWs
+                countif: DoctrineExtensions\Query\Mysql\CountIf
+                crc32: DoctrineExtensions\Query\Mysql\Crc32
+                degrees: DoctrineExtensions\Query\Mysql\Degrees
+                field: DoctrineExtensions\Query\Mysql\Field
+                find_in_set: DoctrineExtensions\Query\Mysql\FindInSet
+                group_concat: DoctrineExtensions\Query\Mysql\GroupConcat
+                ifelse: DoctrineExtensions\Query\Mysql\IfElse
+                ifnull: DoctrineExtensions\Query\Mysql\IfNull
+                least: DoctrineExtensions\Query\Mysql\Least
+                lpad: DoctrineExtensions\Query\Mysql\Lpad
+                match_against: DoctrineExtensions\Query\Mysql\MatchAgainst
+                md5: DoctrineExtensions\Query\Mysql\Md5
+                nullif: DoctrineExtensions\Query\Mysql\NullIf
+                radians: DoctrineExtensions\Query\Mysql\Radians
+                regexp: DoctrineExtensions\Query\Mysql\Regexp
+                replace: DoctrineExtensions\Query\Mysql\Replace
+                rpad: DoctrineExtensions\Query\Mysql\Rpad
+                sha1: DoctrineExtensions\Query\Mysql\Sha1
+                sha2: DoctrineExtensions\Query\Mysql\Sha2
+                soundex: DoctrineExtensions\Query\Mysql\Soundex
+                substring_index: DoctrineExtensions\Query\Mysql\SubstringIndex
+                uuid_short: DoctrineExtensions\Query\Mysql\UuidShort
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+fos_user:
+    db_driver:              orm
+    firewall_name:          main
+    user_class:             UserBundle\Entity\User
+    use_listener:           true
+    use_flash_notifications: true
+    use_username_form_type: true
+    model_manager_name:     null  # change it to the name of your entity/document manager if you don't want to use the default one.
+    from_email:
+        address:        '%email_address%'
+        sender_name:    Te Ajut
+    profile:
+        form:
+            type:               FOS\UserBundle\Form\Type\ProfileFormType
+            name:               fos_user_profile_form
+            validation_groups:  [Profile, Default]
+    change_password:
+        form:
+            type:               FOS\UserBundle\Form\Type\ChangePasswordFormType
+            name:               fos_user_change_password_form
+            validation_groups:  [ChangePassword, Default]
+    registration:
+        confirmation:
+            enabled:    true
+            template:   :mail:registration_email.email.twig
+        form:
+            type:               FOS\UserBundle\Form\Type\RegistrationFormType
+            name:               fos_user_registration_form
+            validation_groups:  [Registration, Default]
+    resetting:
+        token_ttl: 86400
+        email:
+            template:   :mail:resetting_email.email.twig
+        form:
+            type:               FOS\UserBundle\Form\Type\ResettingFormType
+            name:               fos_user_resetting_form
+            validation_groups:  [ResetPassword, Default]
+    service:
+        mailer:                 fos_user.mailer.twig_swift
+        email_canonicalizer:    fos_user.util.canonicalizer.default
+        username_canonicalizer: fos_user.util.canonicalizer.default
+        token_generator:        fos_user.util.token_generator.default
+        user_manager:           fos_user.user_manager.default
+
+assetic:
+    debug:          false
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        # enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+        sonata.admin.block.mile_radius: ~
+
+sonata_admin:
+    title: 'Te Ajut'
+    #title_logo: bundles/acmedemo/img/fancy_acme_logo.png
+    dashboard:
+        blocks:
+            -
+                position: left
+                type: sonata.admin.block.admin_list
+        groups:
+            admin:
+                items: ~
+    templates:
+        layout: ":admin:standard_layout.html.twig"
+        # knp_menu_template: ":admin:sonata_menu.html.twig"
+
+sonata_media:
+    default_context: default
+    db_driver: doctrine_orm
+    providers:
+        image:
+            resizer: sonata.media.resizer.square
+            allowed_extensions: ['jpg', 'png', 'jpeg', 'gif']
+            allowed_mime_types: ['image/pjpeg', 'image/jpeg', 'image/png', 'image/x-png', 'image/gif', 'image/x-ms-bmp']
+        youtube:
+            resizer: sonata.media.resizer.square
+        file:
+            allowed_extensions: ['pdf', 'jpg', 'png', 'jpeg', 'gif']
+            allowed_mime_types: ['application/pdf', 'application/x-pdf', 'image/pjpeg', 'image/jpeg', 'image/png', 'image/x-png', 'image/gif', 'image/x-ms-bmp']
+    contexts:
+        default:
+            providers:
+                - sonata.media.provider.dailymotion
+                - sonata.media.provider.youtube
+                - sonata.media.provider.image
+                - sonata.media.provider.file
+            formats:
+                small: { width: 100 , quality: 70}
+                big:   { width: 500 , quality: 70}
+        profile_picture:
+            providers:
+                - sonata.media.provider.image
+            formats:
+                header: {width: 40, height: 40, quality: 100}
+                dashboard: {width: 200, height: 200, quality: 100}
+                profile: {width: 250, height: 250, quality: 100}
+        files:
+            providers:
+                - sonata.media.provider.file
+            formats: ~
+    cdn:
+        server:
+            path: /uploads/media # http://media.sonata-project.org/
+
+    filesystem:
+        local:
+            directory:  %kernel.root_dir%/../web/uploads/media
+            create:     false

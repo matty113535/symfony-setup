@@ -1,0 +1,7 @@
+user_bundle_profile:
+    resource: "@UserBundle/Resources/config/routing/profile.yml"
+    prefix: /u
+
+user_bundle_registration:
+    resource: "@UserBundle/Resources/config/routing/registration.yml"
+    prefix: /u

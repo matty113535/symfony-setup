@@ -1,0 +1,3 @@
+user_profile:
+    path:     /profile
+    defaults: { _controller: UserBundle:Profile:show }

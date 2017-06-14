@@ -1,0 +1,9 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+	{% set len = value|length %}
+    {% for val in value|slice(0,len-1) %}
+        {{ val | trans() }}
+        {% if not loop.last %},{% endif %}
+    {% endfor %}
+{% endblock %}

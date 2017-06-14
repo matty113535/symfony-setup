@@ -1,0 +1,21 @@
+UserBundle\Entity\User:
+    properties:
+        firstName:
+            - NotBlank:
+                message: 'Please enter your first name'
+        lastName:
+            - NotBlank:
+                message: 'Please enter your last name'
+        phoneNumber:
+            - NotBlank:
+                message: 'Please enter a phone number'
+            - Regex:
+                pattern: '/^(\d){10}$/'
+                match: true
+                message: "Phone number must be exactly 10 digits"
+        # dob:
+        #     - NotBlank:
+        #         message: 'Please enter your date of birth'
+        #     - LessThan:
+        #         value: -18 years
+        #         message: 'You must be at least 18 years old'

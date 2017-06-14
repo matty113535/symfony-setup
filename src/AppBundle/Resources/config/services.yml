@@ -1,0 +1,13 @@
+services:
+    app.twig.extension.truncate:
+            class: AppBundle\Twig\Extension\Truncate
+            tags:
+                - { name: twig.extension }
+
+    app.listener.email_notification:
+        abstract: true
+        class: AppBundle\EventListener\EmailNotificationListener
+        calls:
+            - [setMailer, ['@mailer']]
+            - [setTwig, ['@twig']]
+            - [setFromEmail, ['%email_address%']]

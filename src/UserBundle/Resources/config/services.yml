@@ -1,0 +1,35 @@
+services:
+    #Event Listeners
+    user.listener.registration:
+        class: UserBundle\EventListener\RegistrationListener
+        parent: app.listener.email_notification
+        arguments: ["%email_address%"]
+        tags:
+            - {name: kernel.event_subscriber}
+    
+    user.listener.change_password:
+        class: UserBundle\EventListener\ChangePasswordListener
+        arguments: ['@router']
+        tags:
+            - {name: kernel.event_subscriber}
+    #Util
+    user.util.user_manipulator:
+        class: UserBundle\Util\UserManipulator
+        arguments: ["@fos_user.user_manager", "@event_dispatcher", "@request_stack"]
+
+    #Forms
+    fos_user.registration.form.factory:
+        class: UserBundle\Form\Factory\FormFactory
+        arguments: ["@form.factory", "%fos_user.registration.form.name%", "%fos_user.registration.form.type%", "%fos_user.registration.form.validation_groups%"]
+
+    user.form.type.user_registration:
+        class: UserBundle\Form\Type\UserRegistrationFormType
+        tags:
+            - { name: form.type, alias: user_registration_form }
+    
+    #Admin Area
+    user.admin.user:
+        class: UserBundle\Admin\UserAdmin
+        arguments: [~, UserBundle\Entity\User, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: User }

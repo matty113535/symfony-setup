@@ -1,0 +1,48 @@
+symfony_stage:
+  extends:
+    file: common.yml
+    service: symfony
+  container_name: symfony_stage
+  links:
+    - mysql_stage
+  environment:
+    SYMFONY_ENV: prod
+
+nginx_stage:
+  extends:
+    file: common.yml
+    service: nginx
+  container_name: nginx_stage
+  restart: always
+  links:
+    - fpm_stage
+  volumes:
+    - ./nginx/nginx_staging.conf:/etc/nginx/conf.d/default.conf
+  environment:
+    VIRTUAL_HOST: staging.teajut.ro
+
+
+fpm_stage:
+  extends:
+    file: common.yml
+    service: fpm
+  restart: always
+  container_name: fpm_stage
+  links:
+    - mysql_stage
+  entrypoint: /start_fpm.sh
+  # command: php-fpm --allow-to-run-as-root
+  volumes:
+    - ./php/xdebug_prod.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    - ./php/fpm_prod.conf:/usr/local/etc/php-fpm.conf
+    - ./php/start_fpm_prod.sh:/start_fpm.sh
+    - ./php/cronfile:/cronfile
+  volumes_from:
+    - symfony_stage
+
+mysql_stage:
+  extends:
+    file: common.yml
+    service: mysql
+  restart: always
+  container_name: mysql_stage

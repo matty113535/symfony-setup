@@ -1,0 +1,16 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field%}
+    {% set len = value|length %}
+    {% for key, val in value|slice(0,len-1) %}
+        {% if field_description.options.safe %}
+            {{ val|trans()|raw }}
+        {% else %}
+            {{ val | trans()}}
+        {% endif %}
+
+        {% if not loop.last %}
+            {% if field_description.options.inline is not defined or false == field_description.options.inline %}, {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}

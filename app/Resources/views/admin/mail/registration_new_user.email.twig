@@ -1,0 +1,17 @@
+{% block subject %}
+	{%- autoescape false -%}
+	New User
+	{%- endautoescape -%}
+{% endblock %}
+
+{% block body_text %}
+	{% autoescape false %}
+	<p>admin notify</p>
+	{{ user }}
+	{% endautoescape %}
+{% endblock %}
+
+{% block body_html %}
+	<p>admin notify</p>
+	{{ user }}
+{% endblock %}

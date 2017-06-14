@@ -1,0 +1,1 @@
+* * * * * /usr/local/bin/php /var/www/symfony2/bin/console swiftmailer:spool:send --message-limit=10 --env=prod
